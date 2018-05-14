@@ -1,1 +1,1 @@
-index.blade.php
+<h1>Its working</h1>
