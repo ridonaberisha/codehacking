@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+
+use DB;
+
 
 class AdminUsersController extends Controller
 {
@@ -15,8 +20,8 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-
-        return view('admin.users.index');
+        $users=User::all();
+        return view('admin.users.index',compact('users'));
     }
 
     /**
@@ -26,9 +31,28 @@ class AdminUsersController extends Controller
      */
     public function create()
     {
-        
+       $data =input::get();
+
+        User::create([
+            'name'=>$data['name'],
+            'email'=>$data['email'],
+            'password'=>$data['password'],
+        ]); 
+
      return view('admin.users.create');
     }
+
+
+
+public function insert(Request $request){
+    $name=$request->input('name');
+    $email=$request->input('email');
+    $password=$request->input('password');
+    $data=array('name'=>$name,'email'=>$email,'password'=>$password);
+    DB::table('users')->insert($data);
+}
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -36,10 +60,11 @@ class AdminUsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    // public function store(Request $request)
+    // {
+    //     //
+    //     return $request->all();
+    // }
 
     /**
      * Display the specified resource.
